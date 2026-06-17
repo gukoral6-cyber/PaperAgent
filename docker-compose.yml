@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  paperagent:
+    build: .
+    container_name: paperagent
+    ports:
+      - "8501:8501"
+    volumes:
+      # 挂载 API Key 配置，避免写入镜像
+      - ./.env:/app/.env
+      # 挂载缓存目录，Embedding 模型只需下载一次
+      - ./cache:/root/.cache
+    environment:
+      - STREAMLIT_SERVER_MAX_UPLOAD_SIZE=50
+    restart: unless-stopped
